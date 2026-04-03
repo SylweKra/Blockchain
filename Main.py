@@ -27,7 +27,7 @@ def main():
     transactions_list = []
     merkle_tree = None
 
-    print("Welcome to the Blockchain and Merkle Tree Demo!")
+    print("Welcome to TASCoin! A mini Blockchain and Merkle Tree Demo! (Group 4)")
 
     while True:
         print_header("Main Menu")
