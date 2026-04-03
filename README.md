@@ -1,11 +1,22 @@
-# Blockchain
+# TASCoin - A mini blockchain demo
+
+## Members
+- DI BIASE Amedeo, SID: 25550225
+- KRASINSKI Sylwester, SID: 25550276
+- ZELENYUK Tamara Yevhenivna, SID: 25408038
 
 ## Sources
 
 - https://github.com/shafu0x/blockchain-from-scratch?tab=readme-ov-file
 - https://github.com/shafu0x/block-explorer/blob/main/README.md
 
-## Instructions
+## HW/OS requirements
+- CPU: 1 GHz 64-bit or faster
+- RAM: 512 MB (2 GB+ recommended)
+- Disk Space: 500 MB for installation and libraries
+- OS: Windows 10+, any modern Linux
+
+## How to run
 
 1) Enter WSL
 2) Clone the repo: ``git clone https://github.com/SylweKra/Blockchain``
@@ -42,3 +53,8 @@
     	- Expected value: ``positive integer``
     2. Enter new amount for selected transaction:
         - Expected value: ``positive integer``
+
+## Execution guide
+1. First we have to create two or more users using function (1);
+2. Then we can create some transactions (manually or automatically), using functions (2) or (3), respectively;
+3. After that we can either: generate the Merkle Tree (4), validate a previous transaction (5) or try to tamper with a transaction (6).
