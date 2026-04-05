@@ -3,7 +3,7 @@ import json
 import copy
 from Transaction import Transaction, Wallet
 from MerkleTree import MerkleTree
-
+from Blockchain import Blockchain
 
 def print_header(title):
     print(f"\n{'='*15} {title.upper()} {'='*15}")
@@ -24,6 +24,8 @@ def main():
     wallets_addr = {}  # { "Alice": "base64_address..." }
     balances = {}  # { "Alice": 1000 }
 
+    current_block_transactions = []
+    blockchain = Blockchain()  # Initialize the blockchain
     transactions_list = []
     merkle_tree = None
 
@@ -37,9 +39,11 @@ def main():
         print("4. Generate and Display the Merkle Tree")
         print("5. Verify a Transaction (Merkle Proof)")
         print("6. Tamper with a Transaction (Attack!)")
-        print("7. Exit")
+        print("7. Create New Block (Add transactions to blockchain)") 
+        print("8. Display Blockchain")  
+        print("9. Exit")
 
-        choice = input("\nChoose an option (1-7): ")
+        choice = input("\nChoose an option (1-9): ")
 
         # ==========================================
         # OPTION 1: CREATE USERS AND ASSIGN BALANCES
@@ -107,6 +111,7 @@ def main():
                 # Transaction signing
                 tx.sign_transaction(wallets_obj[sender])
                 transactions_list.append(tx)
+                current_block_transactions.append(tx) 
 
                 # Update fictitious balances
                 balances[sender] -= amount
@@ -145,7 +150,7 @@ def main():
                     )
                     tx.sign_transaction(wallets_obj[sender])
                     transactions_list.append(tx)
-
+                    current_block_transactions.append(tx) 
                     # Update fictitious balances without fund checks for demo simplicity
                     balances[sender] -= amount
                     balances[recipient] += amount
@@ -300,10 +305,50 @@ def main():
             except ValueError:
                 print("❌ Invalid input.")
 
+
         # ==========================================
-        # OPTION 7: EXIT
+        # OPTION 7: CREATE NEW BLOCK 
         # ==========================================
         elif choice == "7":
+            print_header("Create New Block")
+            if not current_block_transactions:
+                print("❌ No pending transactions to add to a block!")
+                confirm = input("Create an empty block? (y/n): ")
+                if confirm.lower() != 'y':
+                    continue
+            
+            print(f"Creating block with {len(current_block_transactions)} transactions...")
+            new_block = blockchain.add_block(current_block_transactions)
+            
+            # Clear pending transactions
+            current_block_transactions = []
+            
+            
+            print(f"\n✅ Block #{new_block.index} created and added to blockchain!")
+            print(f"   Block Hash: {new_block.hash[:32]}...")
+            
+            merkle_root = new_block.merkle_tree.get_root()
+            if merkle_root:
+                print(f"   Merkle Root: {merkle_root[:32]}...")
+
+        # ==========================================
+        # OPTION 8: DISPLAY BLOCKCHAIN 
+        # ==========================================
+        elif choice == "8":
+            print_header("Blockchain Display")
+            blockchain.display_chain()
+            
+            # Also show pending transactions
+            if current_block_transactions:
+                print(f"\n📝 Pending transactions (not yet in a block): {len(current_block_transactions)}")
+            else:
+                print("\n📝 No pending transactions.")
+
+
+        # ==========================================
+        # OPTION 9: EXIT
+        # ==========================================
+        elif choice == "9":
             print("Exiting the Demo. See you next time!")
             break
         else:
