@@ -1,6 +1,6 @@
 # TASCoin - A mini blockchain demo
 
-## Members
+## Members of Group 4
 - DI BIASE Amedeo, SID: 25550225
 - KRASINSKI Sylwester, SID: 25550276
 - ZELENYUK Tamara Yevhenivna, SID: 25408038
@@ -15,6 +15,10 @@
 - RAM: 512 MB (2 GB+ recommended)
 - Disk Space: 500 MB for installation and libraries
 - OS: Windows 10+, any modern Linux
+
+## Required libraries and dependencies
+- Python 3
+- `ecdsa` (installed with `pip install -r requirements.txt`)
 
 ## How to run
 
@@ -66,3 +70,11 @@
 1. First we have to create two or more users using function (1);
 2. Then we can create some transactions (manually or automatically), using functions (2) or (3), respectively;
 3. After that we can either: generate the Merkle Tree (4), validate a previous transaction (5), try to tamper with a transaction (6), mine a new block (7), or run the block tamper test (9).
+
+### Expected output
+- The program starts with a TASCoin welcome message and a numbered menu.
+- Creating users prints generated wallet addresses and initial balances.
+- Creating transactions prints transaction details and updates the pending list.
+- Mining a block prints the block index, nonce, hash, and Merkle root.
+- Displaying the blockchain prints the chain contents so you can confirm the blocks were added correctly.
+- Tamper tests print a validation result showing whether the chain is still valid after modification.
