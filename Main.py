@@ -39,8 +39,8 @@ def main():
         print("4. Generate and Display the Merkle Tree")
         print("5. Verify a Transaction (Merkle Proof)")
         print("6. Tamper with a Transaction (Attack!)")
-        print("7. Create New Block (Add transactions to blockchain)") 
-        print("8. Display Blockchain")  
+        print("7. Mine and Create New Block (Add transactions to blockchain)")
+        print("8. Display Blockchain")
         print("9. Exit")
 
         choice = input("\nChoose an option (1-9): ")
@@ -319,17 +319,21 @@ def main():
             
             print(f"Creating block with {len(current_block_transactions)} transactions...")
             new_block = blockchain.add_block(current_block_transactions)
-            
+
             # Clear pending transactions
             current_block_transactions = []
-            
-            
+
             print(f"\n✅ Block #{new_block.index} created and added to blockchain!")
             print(f"   Block Hash: {new_block.hash[:32]}...")
+            print(f"   Nonce: {new_block.nonce}")
+            print(f"   Difficulty Target: {blockchain.difficulty_prefix}")
             
             merkle_root = new_block.merkle_tree.get_root()
             if merkle_root:
                 print(f"   Merkle Root: {merkle_root[:32]}...")
+            
+            if blockchain.is_chain_valid():
+                print("   Proof-of-work verified for the full chain.")
 
         # ==========================================
         # OPTION 8: DISPLAY BLOCKCHAIN 

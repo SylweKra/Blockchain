@@ -50,11 +50,14 @@
     	- Expected value: ``positive integer``
 6. Tamper with a Transaction (Attack!)
     1. Enter id of transaction to tamper:
-    	- Expected value: ``positive integer``
+     	- Expected value: ``positive integer``
     2. Enter new amount for selected transaction:
         - Expected value: ``positive integer``
+7. Mine and Create New Block
+    1. The block header is hashed repeatedly with an incrementing nonce until the hash starts with ``000000``.
+    2. Pending transactions are then committed to the chain with the valid nonce.
 
 ## Execution guide
 1. First we have to create two or more users using function (1);
 2. Then we can create some transactions (manually or automatically), using functions (2) or (3), respectively;
-3. After that we can either: generate the Merkle Tree (4), validate a previous transaction (5) or try to tamper with a transaction (6).
+3. After that we can either: generate the Merkle Tree (4), validate a previous transaction (5), try to tamper with a transaction (6), or mine a new block (7).
