@@ -24,13 +24,16 @@ class Block:
         self.merkle_tree = MerkleTree(transactions)
         self.hash = self.SHA256_block_hash()
 
+    def get_merkle_root(self) -> Optional[str]:
+        return MerkleTree(self.transactions).get_root()
+
     def SHA256_block_hash(self) -> str:
         block_data = {
             "index": self.index,
             "previous_hash": self.previous_hash,
             "timestamp": self.timestamp,
             "nonce": self.nonce,
-            "merkle_root": self.merkle_tree.get_root(),
+            "merkle_root": self.get_merkle_root(),
         }
         block_string = json.dumps(block_data, sort_keys=True)
         return hashlib.sha256(block_string.encode()).hexdigest()
@@ -52,7 +55,7 @@ class Block:
             "previous_hash": self.previous_hash,
             "hash": self.hash,
             "nonce": self.nonce,
-            "merkle_root": self.merkle_tree.get_root(),
+            "merkle_root": self.get_merkle_root(),
             "transactions_count": len(self.transactions)
         }
 
@@ -78,17 +81,22 @@ class Blockchain:
         return block
     
     def is_chain_valid(self) -> bool:
-        for i, block in enumerate(self.chain):
-            if i > 0:
-                if block.previous_hash != self.chain[i-1].hash:
-                    print(f"Block {i} link broken!")
-                    return False
+        for i in range(len(self.chain) - 1, -1, -1):
+            block = self.chain[i]
+
             if block.hash != block.calculate_hash():
                 print(f"Block {i} hash invalid!")
                 return False
+
             if not block.hash.startswith(self.difficulty_prefix):
                 print(f"Block {i} does not satisfy proof-of-work!")
                 return False
+
+            if i > 0:
+                previous_block = self.chain[i - 1]
+                if block.previous_hash != previous_block.calculate_hash():
+                    print(f"Block {i} link broken!")
+                    return False
 
         print("Blockchain valid!")
         return True
@@ -104,7 +112,7 @@ class Blockchain:
             print(f"  Hash: {block.hash[:20]}...")
             print(f"  Nonce: {block.nonce}")
             
-            merkle_root = block.merkle_tree.get_root()
+            merkle_root = block.get_merkle_root()
             if merkle_root:
                 print(f"Merkle Root: {merkle_root[:20]}...")
             else:

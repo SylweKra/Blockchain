@@ -4,6 +4,7 @@ import copy
 from Transaction import Transaction, Wallet
 from MerkleTree import MerkleTree
 from Blockchain import Blockchain
+from tamper_test import tamper_live_blockchain
 
 def print_header(title):
     print(f"\n{'='*15} {title.upper()} {'='*15}")
@@ -41,9 +42,10 @@ def main():
         print("6. Tamper with a Transaction (Attack!)")
         print("7. Mine and Create New Block (Add transactions to blockchain)")
         print("8. Display Blockchain")
-        print("9. Exit")
+        print("9. Run Block Tamper Test")
+        print("10. Exit")
 
-        choice = input("\nChoose an option (1-9): ")
+        choice = input("\nChoose an option (1-10): ")
 
         # ==========================================
         # OPTION 1: CREATE USERS AND ASSIGN BALANCES
@@ -328,7 +330,7 @@ def main():
             print(f"   Nonce: {new_block.nonce}")
             print(f"   Difficulty Target: {blockchain.difficulty_prefix}")
             
-            merkle_root = new_block.merkle_tree.get_root()
+            merkle_root = new_block.get_merkle_root()
             if merkle_root:
                 print(f"   Merkle Root: {merkle_root[:32]}...")
             
@@ -348,11 +350,21 @@ def main():
             else:
                 print("\n📝 No pending transactions.")
 
-
         # ==========================================
-        # OPTION 9: EXIT
+        # OPTION 9: BLOCK TAMPER TEST
         # ==========================================
         elif choice == "9":
+            print_header("Block Tamper Test")
+            print(
+                "This test tampers with the blockchain you already built, then re-runs validation."
+            )
+            tamper_live_blockchain(blockchain)
+
+
+        # ==========================================
+        # OPTION 10: EXIT
+        # ==========================================
+        elif choice == "10":
             print("Exiting the Demo. See you next time!")
             break
         else:
