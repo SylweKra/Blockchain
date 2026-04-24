@@ -6,6 +6,7 @@ from MerkleTree import MerkleTree
 from Blockchain import Blockchain
 from tamper_test import tamper_live_blockchain
 
+
 def print_header(title):
     print(f"\n{'='*15} {title.upper()} {'='*15}")
 
@@ -29,7 +30,20 @@ def main():
     blockchain = Blockchain()  # Initialize the blockchain
     transactions_list = []
     merkle_tree = None
-
+    print(
+        r""" ________  ______    ______    ______             __           
+/        |/      \  /      \  /      \           /  |          
+$$$$$$$$//$$$$$$  |/$$$$$$  |/$$$$$$  |  ______  $$/  _______  
+   $$ |  $$ |__$$ |$$ \__$$/ $$ |  $$/  /      \ /  |/       \ 
+   $$ |  $$    $$ |$$      \ $$ |      /$$$$$$  |$$ |$$$$$$$  |
+   $$ |  $$$$$$$$ | $$$$$$  |$$ |   __ $$ |  $$ |$$ |$$ |  $$ |
+   $$ |  $$ |  $$ |/  \__$$ |$$ \__/  |$$ \__$$ |$$ |$$ |  $$ |
+   $$ |  $$ |  $$ |$$    $$/ $$    $$/ $$    $$/ $$ |$$ |  $$ |
+   $$/   $$/   $$/  $$$$$$/   $$$$$$/   $$$$$$/  $$/ $$/   $$/ 
+                                                               
+                                                               
+                                                               """
+    )
     print("Welcome to TASCoin! A mini Blockchain and Merkle Tree Demo! (Group 4)")
 
     while True:
@@ -113,7 +127,7 @@ def main():
                 # Transaction signing
                 tx.sign_transaction(wallets_obj[sender])
                 transactions_list.append(tx)
-                current_block_transactions.append(tx) 
+                current_block_transactions.append(tx)
 
                 # Update fictitious balances
                 balances[sender] -= amount
@@ -152,7 +166,7 @@ def main():
                     )
                     tx.sign_transaction(wallets_obj[sender])
                     transactions_list.append(tx)
-                    current_block_transactions.append(tx) 
+                    current_block_transactions.append(tx)
                     # Update fictitious balances without fund checks for demo simplicity
                     balances[sender] -= amount
                     balances[recipient] += amount
@@ -307,19 +321,20 @@ def main():
             except ValueError:
                 print("❌ Invalid input.")
 
-
         # ==========================================
-        # OPTION 7: CREATE NEW BLOCK 
+        # OPTION 7: CREATE NEW BLOCK
         # ==========================================
         elif choice == "7":
             print_header("Create New Block")
             if not current_block_transactions:
                 print("❌ No pending transactions to add to a block!")
                 confirm = input("Create an empty block? (y/n): ")
-                if confirm.lower() != 'y':
+                if confirm.lower() != "y":
                     continue
-            
-            print(f"Creating block with {len(current_block_transactions)} transactions...")
+
+            print(
+                f"Creating block with {len(current_block_transactions)} transactions..."
+            )
             new_block = blockchain.add_block(current_block_transactions)
 
             # Clear pending transactions
@@ -329,24 +344,26 @@ def main():
             print(f"   Block Hash: {new_block.hash[:32]}...")
             print(f"   Nonce: {new_block.nonce}")
             print(f"   Difficulty Target: {blockchain.difficulty_prefix}")
-            
+
             merkle_root = new_block.get_merkle_root()
             if merkle_root:
                 print(f"   Merkle Root: {merkle_root[:32]}...")
-            
+
             if blockchain.is_chain_valid():
                 print("   Proof-of-work verified for the full chain.")
 
         # ==========================================
-        # OPTION 8: DISPLAY BLOCKCHAIN 
+        # OPTION 8: DISPLAY BLOCKCHAIN
         # ==========================================
         elif choice == "8":
             print_header("Blockchain Display")
             blockchain.display_chain()
-            
+
             # Also show pending transactions
             if current_block_transactions:
-                print(f"\n📝 Pending transactions (not yet in a block): {len(current_block_transactions)}")
+                print(
+                    f"\n📝 Pending transactions (not yet in a block): {len(current_block_transactions)}"
+                )
             else:
                 print("\n📝 No pending transactions.")
 
@@ -359,7 +376,6 @@ def main():
                 "This test tampers with the blockchain you already built, then re-runs validation."
             )
             tamper_live_blockchain(blockchain)
-
 
         # ==========================================
         # OPTION 10: EXIT
